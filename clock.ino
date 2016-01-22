@@ -1,3 +1,4 @@
+
 /*********************
 
 Colored clock for the Adafruit RGB Character LCD Shield + SD-RTC shield
@@ -6,8 +7,8 @@ Colored clock for the Adafruit RGB Character LCD Shield + SD-RTC shield
 
 #include <Wire.h>
 #include "RTClib.h"
-#include <utility/Adafruit_MCP23017.h>
 #include <Adafruit_RGBLCDShield.h>
+#include <utility/Adafruit_MCP23017.h>
 
 #define RED 0x1
 #define YELLOW 0x3
@@ -28,7 +29,6 @@ void setup()
   lcd.setBacklight(YELLOW);
   Wire.begin();
   rtc.begin();
-  //Serial.begin(9600); 
 }
 
 void loop() 
@@ -36,43 +36,36 @@ void loop()
   now = rtc.now();
   updateTime();
   updateColor();
-  //updateSense();
-  updateLight();
 }
 
 void updateTime()
 {
 
  // Time variables
+ 
  int s = now.second(); 
  int m = now.minute(); 
  int h = now.hour();
  int d = now.day();  
  int M = now.month();
  int y = now.year(); 
- int D = now.dayOfWeek();
+// int D = now.dayOfWeek();
  
  // Clock
- lcd.setCursor(6,1);
- if (h-1<10) {lcd.print(0);} lcd.print(h-1);
+ 
+ lcd.setCursor(4,1);
+ if (h-1<10) {lcd.print(0);} lcd.print(h);
  lcd.print(":");
  if (m<10) {lcd.print(0);} lcd.print(m);
  lcd.print(":");
  if (s<10) {lcd.print(0);} lcd.print(s);
 
  // Calendar
- lcd.setCursor(2,0);
- if (D=1)lcd.print("Mon");
- else if (D=2)lcd.print("Thu");
- else if (D=3)lcd.print("Wed");
- else if (D=4)lcd.print("Thu");
- else if (D=5)lcd.print("Fri");
- else if (D=6)lcd.print("Sat");
- else if (D=7)lcd.print("Sun");
- lcd.setCursor(6,0);
+ 
+ lcd.setCursor(4,0);
  if (d<10) {lcd.print(0);} lcd.print(d);
  lcd.print(".");
-lcd.print(M);
+ if (M<10) {lcd.print(0);} lcd.print(M);
  lcd.print(".");
  lcd.print(y-2000);
 
@@ -102,24 +95,3 @@ void updateColor()
     } 
    }
 } 
-
-//void updateTemp() 
-//{
-
-  //int tempPin = 1; 
-  //int tempReading;
-
-
-//}
-
-void updateLight() 
-{
-
-  int photocellPin = 0; 
-  int photocellReading; 
-
-  photocellReading = analogRead(photocellPin);
-  lcd.setCursor(2,1); 
-  lcd.print(photocellReading);
-
-}
